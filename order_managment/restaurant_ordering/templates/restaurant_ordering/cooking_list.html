@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="section">
+
+  <h1>Список заказов</h1>
+
+  <div class="msg">
+  {% if messages %}
+    <ul>
+      {% for message in messages %}
+      <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+  </div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID заказа</th>
+        <th>Список товаров</th>
+        <th>Количество товаров</th>
+        <th>Статус приготовления заказа</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in orders %}
+      <tr>
+        <td>{{ order.id }}</td>
+        <td>
+          <ul>
+          {% for orderitem in orderitems %}
+            {% if orderitem.order_id == order.id %}
+            <li> {{ orderitem.product }} </li>
+            {% endif %}
+          {% endfor %}
+          </ul>
+        </td>
+        <td>
+          <ul>
+          {% for orderitem in orderitems %}
+            {% if orderitem.order_id == order.id %}
+            <li> {{ orderitem.quantity }} </li>
+            {% endif %}
+          {% endfor %}
+            </ul>
+        </td>
+        <td>
+          <form action="" method="POST" style="display:inline">
+            {% csrf_token %}
+            <input type="hidden" name="order_id" value="{{ order.id }}">
+            <input class="button" type="submit" style="font-size: 17px"
+                   value="{% if order.status_cook %}Готов{% else %}Готовится{% endif %}">
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

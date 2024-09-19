@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="section">
+
+  <h1>Список заказов</h1>
+
+  <div class="msg">
+  {% if messages %}
+    <ul>
+      {% for message in messages %}
+      <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+  </div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID заказа</th>
+        <th>Телефон клиента</th>
+        <th>Адрес доставки</th>
+        <th>Сумма</th>
+        <th>Статус оплаты</th>
+        <th>Статус доставки</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in orders %}
+      <tr>
+        <td>{{ order.id }}</td>
+        <td>{{ order.customer.phone_number }}</td>
+        <td>{{ order.customer.address }}</td>
+        <td>{{ order.amount }} ₽</td>
+        <td>
+          <form action="{% url 'restaurant_ordering:payment_status' %}" method="POST" style="display:inline">
+            {% csrf_token %}
+            <input type="hidden" name="order_id" value="{{ order.id }}">
+            <input class="button" type="submit" value="{% if order.payment_state %}Оплачено{% else %}Не оплачено{% endif %}">
+          </form>
+        </td>
+        <td>
+          <form action="" method="POST" style="display:inline">
+            {% csrf_token %}
+            <input type="hidden" name="order_id" value="{{ order.id }}">
+            <input class="button" type="submit" value="{% if order.status_delivery %}Доставлено{% else %}Не доставлено{% endif %}">
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
