@@ -40,9 +40,6 @@ class Menu(models.Model): # pylint: disable=too-few-public-methods
         verbose_name = 'Продукт'
         verbose_name_plural = 'Продукты'
 
-    def __str__(self):
-        return self.name_product
-
 
 class Customer(models.Model): # pylint: disable=too-few-public-methods
     """Модель, представляющая данные покупателя."""

@@ -6,7 +6,7 @@ from django.urls import path
 
 from .import views
 
-app_name = "restaurant_ordering"
+app_name = "restaurant_ordering" # pylint: disable=invalid-name
 
 urlpatterns = [
     path('cooking_list/', views.cooking_list, name='cooking_list'),
