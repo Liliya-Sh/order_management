@@ -1,5 +1,5 @@
 """
-ASGI config for order_managment project.
+Конфигурация ASGI для проекта order_managment.
 """
 
 import os

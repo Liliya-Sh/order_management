@@ -1,3 +1,8 @@
+"""
+Декораторы для проверки прав доступа пользователей
+в приложении restaurant_ordering.
+"""
+
 from django.shortcuts import redirect
 from django.urls import reverse
 
@@ -23,13 +28,10 @@ def user_passes_test(test_func):
         def _wrapped_view(request, *args, **kwargs):
             if test_func(request.user) or request.user.is_superuser:
                 return view_func(request, *args, **kwargs)
-            else:
-                # Перенаправление на страницу профиля, если доступ запрещен
-                return redirect(reverse('users_employee:profile_employee'))
+            return redirect(reverse('users_employee:profile_employee'))
         return _wrapped_view
     return decorator
 
 
-# Используйте user_passes_test для создания декоратора
 is_cook_decorator = user_passes_test(is_cook)
 is_delivery_decorator = user_passes_test(is_delivery)
